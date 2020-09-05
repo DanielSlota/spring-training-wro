@@ -47,7 +47,7 @@ public class DummyParticipantService implements ParticipantService {
     }
 
     @Override
-    public List<Participant> findAll(Integer page, Integer size) {
+    public List<Participant> findAll(Integer page, Integer size, String name) {
         return null;
     }
 }

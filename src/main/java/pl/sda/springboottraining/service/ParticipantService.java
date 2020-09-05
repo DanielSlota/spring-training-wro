@@ -2,7 +2,6 @@ package pl.sda.springboottraining.service;
 
 import pl.sda.springboottraining.repository.model.Participant;
 
-import javax.mail.Part;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -21,5 +20,5 @@ public interface ParticipantService {
     
     void deleteByID(Integer id);
 
-    List<Participant> findAll(Integer page, Integer size);
+    List<Participant> findAll(Integer page, Integer size, String name);
 }

@@ -2,6 +2,8 @@ package pl.sda.springboottraining.repository.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.hibernate.validator.constraints.pl.PESEL;
+import pl.sda.springboottraining.constrains.Pesel;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
