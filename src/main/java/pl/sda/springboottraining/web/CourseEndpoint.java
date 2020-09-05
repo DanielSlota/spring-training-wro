@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.sda.springboottraining.repository.model.Course;
 import pl.sda.springboottraining.repository.model.Participant;
 import pl.sda.springboottraining.service.CourseService;
+import pl.sda.springboottraining.service.filter.CourseFilter;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +23,8 @@ public class CourseEndpoint {
     }
 
     @GetMapping
-    public List<Course> findAll(@RequestParam(value = "minPrice", required = false) Integer minPrice,
-                                @RequestParam(value = "maxPrice", required = false) Integer maxPrice) {
-        return courseService.findAll(minPrice, maxPrice);
+    public List<Course> findAll(CourseFilter courseFilter) {
+        return courseService.findAll(courseFilter);
     }
 
     @PostMapping

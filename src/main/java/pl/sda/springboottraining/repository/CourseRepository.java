@@ -34,4 +34,22 @@ public interface CourseRepository extends JpaRepository<Course, Integer>, JpaSpe
         };
     }
 
+    static Specification<Course> hasParticipantsLessThan(Integer participants){
+        return new Specification<Course>() {
+            @Override
+            public Predicate toPredicate(Root<Course> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                return criteriaBuilder.lessThan(root.get("maxParticipants"), participants);
+            }
+        };
+    }
+
+    static Specification<Course> hasInName(String text){
+        return new Specification<Course>() {
+            @Override
+            public Predicate toPredicate(Root<Course> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
+                return criteriaBuilder.like(root.get("name"), "%" + text + "%");
+            }
+        };
+    }
+
 }

@@ -6,14 +6,14 @@ import pl.sda.springboottraining.repository.CourseRepository;
 import pl.sda.springboottraining.repository.ParticipantDBRepository;
 import pl.sda.springboottraining.repository.model.Course;
 import pl.sda.springboottraining.repository.model.Participant;
+import pl.sda.springboottraining.service.filter.CourseFilter;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static pl.sda.springboottraining.repository.CourseRepository.hasPriceGreaterThan;
-import static pl.sda.springboottraining.repository.CourseRepository.hasPriceLessThan;
+import static pl.sda.springboottraining.repository.CourseRepository.*;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -33,15 +33,22 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> findAll(Integer minPrice, Integer maxPrice) {
+    public List<Course> findAll(CourseFilter courseFilter) {
 
         Specification<Course> specification = Specification.where(null);
 
-        if (minPrice != null) {
-            specification = specification.and(hasPriceGreaterThan(minPrice));
+        if (courseFilter.getMinPrice() != null) {
+            specification = specification.and(hasPriceGreaterThan(courseFilter.getMinPrice()));
         }
-        if (maxPrice != null) {
-            specification = specification.and(hasPriceLessThan(maxPrice));
+        if (courseFilter.getMaxPrice() != null) {
+            specification = specification.and(hasPriceLessThan(courseFilter.getMaxPrice()));
+        }
+        if (courseFilter.getMaxParticipants() != null){
+            specification = specification.and(hasParticipantsLessThan(courseFilter.getMaxParticipants()));
+        }
+        if (courseFilter.getName() != null) {
+            specification = specification.and(hasInName(courseFilter.getName()));
+
         }
 
         return courseRepository.findAll(specification);
