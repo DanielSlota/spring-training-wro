@@ -22,12 +22,13 @@ public class CourseEndpoint {
     }
 
     @GetMapping
-    public List<Course> findAll(){
-        return courseService.findAll();
+    public List<Course> findAll(@RequestParam(value = "minPrice", required = false) Integer minPrice,
+                                @RequestParam(value = "maxPrice", required = false) Integer maxPrice) {
+        return courseService.findAll(minPrice, maxPrice);
     }
 
     @PostMapping
-    public void addCourse(@RequestBody Course course){
+    public void addCourse(@RequestBody Course course) {
         courseService.create(course);
     }
 
@@ -40,22 +41,22 @@ public class CourseEndpoint {
     }
 
     @GetMapping("/{id}/participant")
-    public List<Participant> findParticipantsByCourseId(@PathVariable Integer id){
+    public List<Participant> findParticipantsByCourseId(@PathVariable Integer id) {
         return courseService.findParticipantsByCourseId(id);
     }
 
     @PutMapping("/{id}/participant/{participantId}")
-    public void assignParticipant(@PathVariable Integer id, @PathVariable Integer participantId){
+    public void assignParticipant(@PathVariable Integer id, @PathVariable Integer participantId) {
         courseService.assign(id, participantId);
     }
 
     @PutMapping
-    public void updateCourse(@RequestBody Course course){
+    public void updateCourse(@RequestBody Course course) {
         courseService.update(course);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCourse(@PathVariable Integer id){
+    public void deleteCourse(@PathVariable Integer id) {
         courseService.deleteById(id);
     }
 

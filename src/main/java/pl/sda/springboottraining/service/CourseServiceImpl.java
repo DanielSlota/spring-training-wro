@@ -1,5 +1,6 @@
 package pl.sda.springboottraining.service;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import pl.sda.springboottraining.repository.CourseRepository;
 import pl.sda.springboottraining.repository.ParticipantDBRepository;
@@ -10,6 +11,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static pl.sda.springboottraining.repository.CourseRepository.hasPriceGreaterThan;
+import static pl.sda.springboottraining.repository.CourseRepository.hasPriceLessThan;
 
 @Service
 public class CourseServiceImpl implements CourseService {
@@ -29,8 +33,18 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> findAll() {
-        return courseRepository.findAll();
+    public List<Course> findAll(Integer minPrice, Integer maxPrice) {
+
+        Specification<Course> specification = Specification.where(null);
+
+        if (minPrice != null) {
+            specification = specification.and(hasPriceGreaterThan(minPrice));
+        }
+        if (maxPrice != null) {
+            specification = specification.and(hasPriceLessThan(maxPrice));
+        }
+
+        return courseRepository.findAll(specification);
     }
 
     @Override

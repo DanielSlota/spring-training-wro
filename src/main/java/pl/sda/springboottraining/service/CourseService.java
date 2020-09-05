@@ -8,7 +8,7 @@ import java.util.Optional;
 
 public interface CourseService {
 
-    public List<Course> findAll();
+    public List<Course> findAll(Integer minPrice, Integer maxPrice);
 
     void create(Course course);
 
