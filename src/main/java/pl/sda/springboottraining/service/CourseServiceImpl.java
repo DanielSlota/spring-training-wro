@@ -2,6 +2,7 @@ package pl.sda.springboottraining.service;
 
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.sda.springboottraining.repository.CourseRepository;
 import pl.sda.springboottraining.repository.ParticipantDBRepository;
 import pl.sda.springboottraining.repository.model.Course;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 import static pl.sda.springboottraining.repository.CourseRepository.*;
 
 @Service
+@Transactional
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
@@ -70,6 +72,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Participant> findParticipantsByCourseId(Integer id) {
         return courseRepository
                 .findById(id)
@@ -85,6 +88,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional
     public void assign(Integer id, Integer participantId) {
 
         Course course = courseRepository
