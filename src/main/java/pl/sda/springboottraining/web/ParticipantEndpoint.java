@@ -37,8 +37,10 @@ public class ParticipantEndpoint {
 //    }
 
     @GetMapping
-    public List<Participant> getAllPage(@RequestParam("page") Integer page, @RequestParam("size") Integer size){
-        return participantService.findAll(page, size);
+    public List<Participant> getAllPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                        @RequestParam(value = "size", defaultValue = "10") Integer size,
+                                        @RequestParam(value = "name", required = false) String name){
+        return participantService.findAll(page, size, name);
     }
 
     @PostMapping("/list")

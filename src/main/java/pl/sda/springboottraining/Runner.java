@@ -7,7 +7,7 @@ import pl.sda.springboottraining.repository.ParticipantDBRepository;
 import pl.sda.springboottraining.security.UserAccount;
 import pl.sda.springboottraining.security.UserRepository;
 
-//@Component
+@Component
 public class Runner implements CommandLineRunner {
 
     private final ParticipantDBRepository participantDBRepository;
@@ -38,9 +38,12 @@ public class Runner implements CommandLineRunner {
 //                "$2a$04$KNLUwOWHVQZVpXyMBNc7JOzbLiBjb9Tk9bP7KNcPI12ICuvzXQQKG",
 //                "ADMIN"));
 
-        userRepository.save(new UserAccount("lukasz",
-                new BCryptPasswordEncoder().encode("lukasz"),
-                "ADMIN"));
+        if(userRepository.count() == 0) {
+
+            userRepository.save(new UserAccount("lukasz",
+                    new BCryptPasswordEncoder().encode("lukasz"),
+                    "ADMIN"));
+        }
 
     }
 }

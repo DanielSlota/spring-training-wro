@@ -61,7 +61,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = JWT.create()
                 .withSubject(user.getUsername())
                 .withArrayClaim("Role", authorities.toArray(new String[0]))
-                .withExpiresAt(new Date(System.currentTimeMillis() + 360000))
+                .withExpiresAt(new Date(System.currentTimeMillis() + (60 * 60 * 24 * 1000))) // 60 s * 60 min * 24 h = 1 day
                 .sign(Algorithm.HMAC512("XYZ"));
             response.addHeader("Authorization", "Bearer " + token);
 

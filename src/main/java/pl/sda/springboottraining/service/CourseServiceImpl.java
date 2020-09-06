@@ -1,17 +1,23 @@
 package pl.sda.springboottraining.service;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.sda.springboottraining.repository.CourseRepository;
 import pl.sda.springboottraining.repository.ParticipantDBRepository;
 import pl.sda.springboottraining.repository.model.Course;
 import pl.sda.springboottraining.repository.model.Participant;
+import pl.sda.springboottraining.service.filter.CourseFilter;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static pl.sda.springboottraining.repository.CourseRepository.*;
+
 @Service
+@Transactional
 public class CourseServiceImpl implements CourseService {
 
     private final CourseRepository courseRepository;
@@ -29,8 +35,25 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<Course> findAll() {
-        return courseRepository.findAll();
+    public List<Course> findAll(CourseFilter courseFilter) {
+
+        Specification<Course> specification = Specification.where(null);
+
+        if (courseFilter.getMinPrice() != null) {
+            specification = specification.and(hasPriceGreaterThan(courseFilter.getMinPrice()));
+        }
+        if (courseFilter.getMaxPrice() != null) {
+            specification = specification.and(hasPriceLessThan(courseFilter.getMaxPrice()));
+        }
+        if (courseFilter.getMaxParticipants() != null){
+            specification = specification.and(hasParticipantsLessThan(courseFilter.getMaxParticipants()));
+        }
+        if (courseFilter.getName() != null) {
+            specification = specification.and(hasInName(courseFilter.getName()));
+
+        }
+
+        return courseRepository.findAll(specification);
     }
 
     @Override
@@ -49,6 +72,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Participant> findParticipantsByCourseId(Integer id) {
         return courseRepository
                 .findById(id)
@@ -64,6 +88,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    @Transactional
     public void assign(Integer id, Integer participantId) {
 
         Course course = courseRepository

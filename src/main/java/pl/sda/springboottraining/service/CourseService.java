@@ -2,13 +2,14 @@ package pl.sda.springboottraining.service;
 
 import pl.sda.springboottraining.repository.model.Course;
 import pl.sda.springboottraining.repository.model.Participant;
+import pl.sda.springboottraining.service.filter.CourseFilter;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CourseService {
 
-    public List<Course> findAll();
+    public List<Course> findAll(CourseFilter courseFilter);
 
     void create(Course course);
 

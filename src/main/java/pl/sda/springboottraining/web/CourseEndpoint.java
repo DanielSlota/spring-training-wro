@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.sda.springboottraining.repository.model.Course;
 import pl.sda.springboottraining.repository.model.Participant;
 import pl.sda.springboottraining.service.CourseService;
+import pl.sda.springboottraining.service.filter.CourseFilter;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,12 +23,12 @@ public class CourseEndpoint {
     }
 
     @GetMapping
-    public List<Course> findAll(){
-        return courseService.findAll();
+    public List<Course> findAll(CourseFilter courseFilter) {
+        return courseService.findAll(courseFilter);
     }
 
     @PostMapping
-    public void addCourse(@RequestBody Course course){
+    public void addCourse(@RequestBody Course course) {
         courseService.create(course);
     }
 
@@ -40,22 +41,22 @@ public class CourseEndpoint {
     }
 
     @GetMapping("/{id}/participant")
-    public List<Participant> findParticipantsByCourseId(@PathVariable Integer id){
+    public List<Participant> findParticipantsByCourseId(@PathVariable Integer id) {
         return courseService.findParticipantsByCourseId(id);
     }
 
     @PutMapping("/{id}/participant/{participantId}")
-    public void assignParticipant(@PathVariable Integer id, @PathVariable Integer participantId){
+    public void assignParticipant(@PathVariable Integer id, @PathVariable Integer participantId) {
         courseService.assign(id, participantId);
     }
 
     @PutMapping
-    public void updateCourse(@RequestBody Course course){
+    public void updateCourse(@RequestBody Course course) {
         courseService.update(course);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCourse(@PathVariable Integer id){
+    public void deleteCourse(@PathVariable Integer id) {
         courseService.deleteById(id);
     }
 
